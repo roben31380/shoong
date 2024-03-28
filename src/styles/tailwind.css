@@ -12,5 +12,5 @@
 }
 
 .buttonStyle {
-  @apply rounded bg-primary px-4 py-1 text-white transition duration-300;
+  @apply bg-primary px-4 py-1 text-white transition duration-300;
 }
