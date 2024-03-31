@@ -4,10 +4,11 @@ import DetailHeader from '@/components/DetailHeader/DetailHeader';
 import SearchBar from '@/components/SearchBar/SearchBar';
 import ConfirmationModal from '@/components/ConfirmationModal/ConfirmationModal';
 import { useLoaderData } from 'react-router';
+import { globalState } from '@/store/store';
 
 const pb = new PocketBase('https://shoong.pockethost.io');
 
-export default function PickMyBias({ items }) {
+export default function PickMyBias() {
   const group = useLoaderData();
   const [userId, setUserId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,15 +27,17 @@ export default function PickMyBias({ items }) {
     }
   }, []);
 
-  const toggleModal = (groupName = '', groupId = '') => {
+  const toggleModal = (groupName, groupId) => {
     setSelectedGroupName(groupName);
     setSelectedGroupId(groupId);
-    setIsModalOpen(!isModalOpen);
+    setIsModalOpen(true);
   };
 
   const handleConfirm = async () => {
     setIsModalOpen(false);
-    localStorage.setItem('bias', JSON.stringify({ init: selectedGroupName }));
+    // Zustand 스토어를 사용하여 전역 상태 업데이트
+    globalState.getState().change(selectedGroupName);
+
     if (!userId) {
       console.error('User ID is missing');
       return;
