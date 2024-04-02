@@ -25,7 +25,7 @@ export default function MyBias() {
         className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full"
         title="최애 그룹 선택"
       >
-        <div className="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-b from-red-400 to-indigo-500 p-1">
+        <div className="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-b from-red-400 to-indigo-500 p-3pxr">
           <img
             src={biasImage}
             alt="내 최애 그룹"

@@ -15,6 +15,8 @@ export default function Header() {
     '/meetupDetail',
     '/LikeDetail',
     '/login',
+    '/informUs',
+    '/photoCardSubmit',
   ];
   const isDetailHeaderPage = pathnames.includes('/' + pathname.split('/')[1]);
   // console.log('isDetailHeaderPage: ', isDetailHeaderPage);

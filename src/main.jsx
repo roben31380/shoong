@@ -26,6 +26,8 @@ import MyBias from './pages/MyBias/MyBias';
 import NotFound from './pages/NotFound/NotFound';
 import Register from './pages/Register/Register';
 import CollectBookAdd from './pages/CollectBookAdd/CollectBookAdd';
+import InformUs from './pages/InformUs/InformUs';
+import PhotoCardSubmit from './pages/PhotoCardSubmit/PhotoCardSubmit';
 
 const router = createBrowserRouter([
   {
@@ -70,6 +72,17 @@ const router = createBrowserRouter([
       {
         path: '/loginInfo',
         element: <LoginInfo />,
+        loader: userData,
+      },
+
+      {
+        path: '/photoCardSubmit',
+        element: <PhotoCardSubmit />,
+        loader: phocaData,
+      },
+      {
+        path: '/informUs',
+        element: <InformUs />,
         loader: userData,
       },
       {
