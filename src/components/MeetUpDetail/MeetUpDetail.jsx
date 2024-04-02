@@ -1,26 +1,21 @@
-// @ts-ignore
 import { useLoaderData } from 'react-router';
 import { useLocation } from 'react-router-dom';
-import { meetUpDataStore } from '@/store/store';
-import MeetUpDetailItem from '../MeetUpDetailItem/MeetUpDetailItem';
-import MeetUpDetailItemContainer from '../MeetUpDetailItemContainer/MeetUpDetailItemContainer';
 import HashTagItem from '../HashTagItem/HashTagItem';
-import CommentContainer from '../Comment/CommentContainer';
-import MeetUpDetailMap from '../MeetUpDetailMap/MeetUpDetailMap';
-import { useEffect } from 'react';
-import { data } from 'autoprefixer';
-import MeetUpItem from '../MeetUpItem/MeetUpItem';
 import DetailHeader from '../DetailHeader/DetailHeader';
 import MeetupCarousel from '../Carousel/ MeetupCarousel';
+import CommentContainer from '../Comment/CommentContainer';
+import MeetUpDetailMap from '../MeetUpDetailMap/MeetUpDetailMap';
+import MeetUpDetailItem from '../MeetUpDetailItem/MeetUpDetailItem';
+import MeetUpDetailItemContainer from '../MeetUpDetailItemContainer/MeetUpDetailItemContainer';
 
 export default function MeetUpDetail() {
   const {
-    eventTitle,
-    cafeName,
-    address,
     date,
-    basicGift,
     event,
+    address,
+    cafeName,
+    basicGift,
+    eventTitle,
     priorityGift,
   } = useLoaderData();
   const { pathname } = useLocation();

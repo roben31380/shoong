@@ -1,5 +1,5 @@
-import pb from '@/api/pocketbase';
 import { useState } from 'react';
+import pb from '@/api/pocketbase';
 import { GoTrash, GoPencil } from 'react-icons/go';
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
 
@@ -128,7 +128,7 @@ export default function ExchangeArticle({
           const timeSinceUpdated = timeSince(exchangeData.updated);
           if (
             exchangeData.writer === loggedInUserId ||
-            loginUser.user.username === 'admin'
+            loginUser?.user.username === 'admin'
           )
             isUserTheWriter = exchangeData.writer;
           if (!user) {
