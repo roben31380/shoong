@@ -14,13 +14,13 @@ export default function InformUs() {
       </h1>
       <div className="flex flex-col items-center space-y-6">
         <Link
-          to="/photoCardSubmit"
+          to="/informUs/photoCardSubmit"
           className="flex w-full max-w-xs items-center justify-center rounded-lg bg-secondary px-8 py-4 text-white transition duration-300 ease-in-out hover:bg-primary"
         >
           포토카드 제보하러 가기 >
         </Link>
         <Link
-          to="/meetupSubmit"
+          to="/informUs/meetupSubmit"
           className="flex w-full max-w-xs items-center justify-center rounded-lg border-2 border-primary bg-white px-8 py-4 text-primary transition duration-300 ease-in-out hover:font-bold"
         >
           밋업 제보하러 가기 >

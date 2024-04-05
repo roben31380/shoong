@@ -7,6 +7,8 @@ export default function ConfirmationModal({
   message,
   cancelButtonText = '취소',
   confirmButtonText = '확인',
+  showCancelButton = true,
+  showConfirmButton = true,
   buttonStyles = {
     cancel: 'rounded bg-gray200 px-4 py-2 hover:bg-gray300',
     confirm: 'rounded bg-primary px-4 py-2 text-white hover:bg-indigo-700',
@@ -20,19 +22,27 @@ export default function ConfirmationModal({
     const handleKeyDown = (e) => {
       if (!isOpen || e.key !== 'Tab') return;
 
-      // Shift + Tab을 눌렀을 때 이전 요소로 포커스 이동
-      const isShiftPressed = e.shiftKey;
-      const currentFocusIsCancelBtn =
-        document.activeElement === cancelButtonRef.current;
-      const currentFocusIsConfirmBtn =
-        document.activeElement === confirmButtonRef.current;
+      const focusableModalElements = [
+        cancelButtonRef.current,
+        confirmButtonRef.current,
+      ].filter((el) => el !== null);
 
-      if (isShiftPressed && currentFocusIsCancelBtn) {
-        e.preventDefault();
-        confirmButtonRef.current.focus();
-      } else if (!isShiftPressed && currentFocusIsConfirmBtn) {
-        e.preventDefault();
-        cancelButtonRef.current.focus();
+      const firstElement = focusableModalElements[0];
+      const lastElement =
+        focusableModalElements[focusableModalElements.length - 1];
+
+      if (e.shiftKey) {
+        // Shift + Tab
+        if (document.activeElement === firstElement) {
+          e.preventDefault();
+          lastElement.focus();
+        }
+      } else {
+        // Tab
+        if (document.activeElement === lastElement) {
+          e.preventDefault();
+          firstElement.focus();
+        }
       }
     };
 
@@ -41,7 +51,7 @@ export default function ConfirmationModal({
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isOpen]);
+  }, [isOpen, showCancelButton, showConfirmButton]); // 의존성 배열에 버튼 표시 여부를 추가
 
   if (!isOpen) return null;
 
@@ -51,20 +61,24 @@ export default function ConfirmationModal({
         <h2 className="mb-4 text-lg font-bold">확인</h2>
         <p>{message}</p>
         <div className="mt-6 flex justify-end gap-3">
-          <button
-            ref={cancelButtonRef}
-            className={buttonStyles.cancel}
-            onClick={onClose}
-          >
-            {cancelButtonText}
-          </button>
-          <button
-            ref={confirmButtonRef}
-            className={buttonStyles.confirm}
-            onClick={onConfirm}
-          >
-            {confirmButtonText}
-          </button>
+          {showCancelButton && (
+            <button
+              ref={cancelButtonRef}
+              className={buttonStyles.cancel}
+              onClick={onClose}
+            >
+              {cancelButtonText}
+            </button>
+          )}
+          {showConfirmButton && (
+            <button
+              ref={confirmButtonRef}
+              className={buttonStyles.confirm}
+              onClick={onConfirm}
+            >
+              {confirmButtonText}
+            </button>
+          )}
         </div>
       </div>
     </div>

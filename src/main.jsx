@@ -28,6 +28,7 @@ import Register from './pages/Register/Register';
 import CollectBookAdd from './pages/CollectBookAdd/CollectBookAdd';
 import InformUs from './pages/InformUs/InformUs';
 import PhotoCardSubmit from './pages/PhotoCardSubmit/PhotoCardSubmit';
+import MeetUpSubmit from './pages/MeetUpSubmit/MeetUpSubmit';
 import KakaoRedirect from './pages/Login/KakaoRedirect';
 // import NaverRedirect from './pages/Login/NaverRedirect';
 import InstaRedirect from './pages/Login/InstaRedirect';
@@ -77,10 +78,14 @@ const router = createBrowserRouter([
         element: <LoginInfo />,
         loader: userData,
       },
-
       {
-        path: '/photoCardSubmit',
+        path: '/informUs/photoCardSubmit',
         element: <PhotoCardSubmit />,
+        loader: phocaData,
+      },
+      {
+        path: '/informUs/meetUpSubmit',
+        element: <MeetUpSubmit />,
         loader: phocaData,
       },
       {
