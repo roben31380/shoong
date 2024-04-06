@@ -2,6 +2,7 @@ import { useState } from 'react';
 import pb from '@/api/pocketbase';
 import { GoTrash, GoPencil } from 'react-icons/go';
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
+import Button from '../Button/Button';
 
 export default function ExchangeArticle({
   users,
@@ -180,18 +181,22 @@ export default function ExchangeArticle({
                     onChange={(e) => setEditingContent(e.target.value)}
                   />
                   <div className="mt-2 flex justify-end gap-2">
-                    <button
-                      className="rounded bg-primary px-4 py-2 text-sm text-white"
+                    <Button
+                      type="submit"
+                      bgClassName="bg-primary"
+                      isSmall={true}
                       onClick={() => handleEditSubmit(exchangeData.id)}
                     >
                       저장
-                    </button>
-                    <button
-                      className="rounded bg-primary px-4 py-2 text-sm text-white"
+                    </Button>
+                    <Button
+                      type="button"
+                      bgClassName="bg-gray-400"
+                      isSmall={true}
                       onClick={handleEditCancel}
                     >
                       취소
-                    </button>
+                    </Button>
                   </div>
                 </div>
               ) : (
@@ -203,12 +208,15 @@ export default function ExchangeArticle({
                 <div className="rounded-3xl border border-gray-700 px-2 py-1 text-xs text-gray-700">
                   {exchangeData.status}
                 </div>
-                <button
+                <Button
                   type="button"
-                  className="rounded bg-primary px-4 py-1 text-white hover:bg-indigo-700 focus:bg-indigo-700 focus:outline-none"
+                  isSmall={true}
+                  bgClassName="bg-primary"
+                  textColorClassName="text-white"
+                  customClassNames="hover:bg-indigo-700 focus:bg-indigo-700 focus:outline-none w-72pxr"
                 >
                   대화하기
-                </button>
+                </Button>
               </div>
             </li>
           );
