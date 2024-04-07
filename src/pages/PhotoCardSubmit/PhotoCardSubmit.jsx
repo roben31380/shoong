@@ -1,19 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import pb from '@/api/pocketbase';
 import DetailHeader from '@/components/DetailHeader/DetailHeader';
+import ConfirmationModal from '@/components/ConfirmationModal/ConfirmationModal';
 
 export default function PhotoCardSubmit() {
-  const [image, setImage] = useState(null); // 사용자가 업로드한 이미지 파일
-  const [selectedGroup, setSelectedGroup] = useState(''); // 선택된 그룹
-  const [memberName, setMemberName] = useState(''); // 입력된 멤버 이름
-  const [cardType, setCardType] = useState(''); // 선택된 카드 종류
-  const [cardName, setCardName] = useState(''); // 입력된 카드 이름
+  const [image, setImage] = useState(null);
+  const [selectedGroup, setSelectedGroup] = useState('');
+  const [memberName, setMemberName] = useState('');
+  const [cardType, setCardType] = useState('');
+  const [cardName, setCardName] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [modalType, setModalType] = useState('confirm');
 
-  const groups = ['뉴진스', 'bts', '블랙핑크']; // 예시 그룹 리스트
+  const groups = [
+    '뉴진스',
+    'BTS',
+    '블랙핑크',
+    'SuperM',
+    'ITZY',
+    '샤이니',
+    '에스파',
+    'NCT',
+    'MonstaX',
+    'TXT',
+    '르세라핌',
+    '레드벨벳',
+    '아이유',
+    '(G)I-DLE',
+    '라이즈',
+  ];
 
   const handleFileChange = (e) => {
-    setImage(e.target.files[0]); // 파일 객체를 직접 저장
-    // URL.createObjectURL 사용하여 미리보기 생성하지 않고, 파일 객체 저장
+    setImage(e.target.files[0]);
   };
 
   const handleGroupSelect = (groupName) => {
@@ -31,24 +50,25 @@ export default function PhotoCardSubmit() {
     e.preventDefault();
     try {
       const userInfo = JSON.parse(localStorage.getItem('auth')).user;
-      const userId = userInfo.id; // 사용자 ID
-
       const formData = new FormData();
-      formData.append('user', userId);
+      formData.append('user', userInfo.id);
       formData.append('type', 'phoca');
       formData.append('group', selectedGroup);
       formData.append('artistName', memberName);
       formData.append('phocaType', cardType);
       formData.append('phocaTitle', cardName);
-      formData.append('phocaImg', image); // 이미지 파일 추가
+      formData.append('phocaImg', image);
 
-      // PocketBase에 데이터 전송
       await pb.collection('informUs').create(formData);
 
-      alert('포토카드가 성공적으로 등록되었습니다.');
+      setModalMessage('포토카드가 성공적으로 등록되었습니다.');
+      setModalType('confirm');
+      setIsModalOpen(true);
     } catch (error) {
       console.error('포토카드 제출 중 오류가 발생했습니다:', error);
-      alert('포토카드 제출 중 오류가 발생했습니다.');
+      setModalMessage('포토카드 제출 중 오류가 발생했습니다.');
+      setModalType('error');
+      setIsModalOpen(true);
     }
   };
 
@@ -80,27 +100,29 @@ export default function PhotoCardSubmit() {
           <h2 className="mb-4 pb-4 pt-8 text-center text-sb03 font-sb03">
             어떤 그룹인가요?
           </h2>
-          <div className="mb-8 flex items-center justify-center overflow-x-auto">
-            {groups.map((group) => (
-              <button
-                key={group}
-                onClick={() => handleGroupSelect(group)}
-                className={`mx-2 rounded-full border ${
-                  selectedGroup === group
-                    ? 'bg-secondary text-white'
-                    : 'border-primary bg-white text-primary'
-                } px-4 py-2`}
-              >
-                {group}
-              </button>
-            ))}
+          <div className="mb-8 flex w-80 overflow-x-auto ">
+            <div className="flex flex-nowrap whitespace-nowrap">
+              {groups.map((group) => (
+                <button
+                  key={group}
+                  onClick={() => handleGroupSelect(group)}
+                  className={`mx-2 rounded-full border ${
+                    selectedGroup === group
+                      ? 'whitespace-nowrap bg-secondary text-white'
+                      : 'whitespace-nowrap border-primary bg-white text-primary'
+                  } px-4 py-2`}
+                >
+                  {group}
+                </button>
+              ))}
+            </div>
           </div>
         </>
       )}
       {selectedGroup && (
         <>
           <h2 className="mb-4 pb-4 pt-8 text-center text-sb03 font-sb03">
-            멤버 이름을 알려주세요
+            어떤 멤버인가요?
           </h2>
           <input
             type="text"
@@ -114,33 +136,35 @@ export default function PhotoCardSubmit() {
       {memberName && (
         <>
           <h2 className="mb-4 pb-4 pt-8 text-center text-sb03 font-sb03">
-            카드 종류가 무엇인가요?
+            카드 종류를 알려주세요!
           </h2>
-          <div className="mb-8 flex justify-center space-x-4">
-            {['앨범', '특전', '팬싸', '시즌그리팅', '기타'].map((type) => (
-              <button
-                key={type}
-                onClick={() => handleCardTypeSelect(type)}
-                className={`rounded-full border ${
-                  cardType === type
-                    ? 'bg-secondary text-white'
-                    : 'border-primary bg-white text-primary'
-                } px-4 py-2`}
-              >
-                {type}
-              </button>
-            ))}
+          <div className="mb-8 flex justify-center space-x-4 whitespace-nowrap">
+            <div className="mb-8 flex w-80 gap-4 overflow-x-auto ">
+              {['앨범', '특전', '팬싸', '시즌그리팅', '기타'].map((type) => (
+                <button
+                  key={type}
+                  onClick={() => handleCardTypeSelect(type)}
+                  className={`rounded-full border ${
+                    cardType === type
+                      ? 'bg-secondary text-white'
+                      : 'border-primary bg-white text-primary'
+                  } px-4 py-2`}
+                >
+                  {type}
+                </button>
+              ))}
+            </div>
           </div>
         </>
       )}
       {cardType && (
         <>
           <h2 className="mb-4 pb-4 pt-8 text-center text-sb03 font-sb03">
-            포토카드 이름을 알려주세요
+            이 포토카드의 이름을 알려주세요!
           </h2>
           <input
             type="text"
-            placeholder="포토카드 이름"
+            placeholder="ex) New Jeans 2023 SEASON's GREETINGS"
             value={cardName}
             onChange={(e) => setCardName(e.target.value)}
             className="mb-8 w-80 border-b-2 border-gray-300 bg-white p-2"
@@ -151,12 +175,21 @@ export default function PhotoCardSubmit() {
         {isSubmitEnabled && (
           <button
             type="submit"
-            className="rounded-lg bg-primary px-4 py-2 text-white"
+            className="rounded-lg bg-primary px-4 py-2 text-white hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-300"
           >
             확인
           </button>
         )}
       </form>
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        message={modalMessage}
+        confirmButtonText="확인"
+        onConfirm={() => setIsModalOpen(false)}
+        showCancelButton={false}
+        useNotification={modalType === 'confirm'}
+      />
     </div>
   );
 }
