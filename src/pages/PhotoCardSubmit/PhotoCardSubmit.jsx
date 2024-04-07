@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import pb from '@/api/pocketbase';
 import DetailHeader from '@/components/DetailHeader/DetailHeader';
 import ConfirmationModal from '@/components/ConfirmationModal/ConfirmationModal';
