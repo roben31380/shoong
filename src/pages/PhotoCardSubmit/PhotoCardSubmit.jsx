@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
+import pb from '@/api/pocketbase';
 import DetailHeader from '@/components/DetailHeader/DetailHeader';
 
 export default function PhotoCardSubmit() {
-  const [image, setImage] = useState(null);
-  const [selectedGroup, setSelectedGroup] = useState('');
-  const [memberName, setMemberName] = useState('');
-  const [cardType, setCardType] = useState('');
-  const [cardName, setCardName] = useState('');
+  const [image, setImage] = useState(null); // 사용자가 업로드한 이미지 파일
+  const [selectedGroup, setSelectedGroup] = useState(''); // 선택된 그룹
+  const [memberName, setMemberName] = useState(''); // 입력된 멤버 이름
+  const [cardType, setCardType] = useState(''); // 선택된 카드 종류
+  const [cardName, setCardName] = useState(''); // 입력된 카드 이름
 
-  const groups = ['뉴진스', 'bts', '블랙핑크'];
+  const groups = ['뉴진스', 'bts', '블랙핑크']; // 예시 그룹 리스트
 
   const handleFileChange = (e) => {
-    setImage(URL.createObjectURL(e.target.files[0]));
+    setImage(e.target.files[0]); // 파일 객체를 직접 저장
+    // URL.createObjectURL 사용하여 미리보기 생성하지 않고, 파일 객체 저장
   };
 
   const handleGroupSelect = (groupName) => {
@@ -25,6 +27,31 @@ export default function PhotoCardSubmit() {
   const isSubmitEnabled =
     image && selectedGroup && memberName && cardType && cardName;
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const userInfo = JSON.parse(localStorage.getItem('auth')).user;
+      const userId = userInfo.id; // 사용자 ID
+
+      const formData = new FormData();
+      formData.append('user', userId);
+      formData.append('type', 'phoca');
+      formData.append('group', selectedGroup);
+      formData.append('artistName', memberName);
+      formData.append('phocaType', cardType);
+      formData.append('phocaTitle', cardName);
+      formData.append('phocaImg', image); // 이미지 파일 추가
+
+      // PocketBase에 데이터 전송
+      await pb.collection('informUs').create(formData);
+
+      alert('포토카드가 성공적으로 등록되었습니다.');
+    } catch (error) {
+      console.error('포토카드 제출 중 오류가 발생했습니다:', error);
+      alert('포토카드 제출 중 오류가 발생했습니다.');
+    }
+  };
+
   return (
     <div className="flex w-full flex-col items-center pb-24 pt-6">
       <DetailHeader title="제보하기" />
@@ -32,12 +59,12 @@ export default function PhotoCardSubmit() {
         포토카드를 등록해 주세요!
       </h1>
       <div className="mb-8">
-        <label className=" flex h-96 w-64 cursor-pointer flex-col items-center justify-center rounded-lg bg-gray-200 text-center leading-normal">
+        <label className="flex h-96 w-64 cursor-pointer flex-col items-center justify-center rounded-lg bg-gray-200 text-center leading-normal">
           {image ? (
             <img
-              src={image}
+              src={URL.createObjectURL(image)}
               alt="Uploaded"
-              className="h-full w-full rounded-lg object-contain"
+              className="h-full w-full rounded-lg object-cover object-center"
             />
           ) : (
             <div className="flex flex-col">
@@ -120,11 +147,16 @@ export default function PhotoCardSubmit() {
           />
         </>
       )}
-      {isSubmitEnabled && (
-        <button className="rounded-lg bg-primary px-4 py-2 text-white">
-          확인
-        </button>
-      )}
+      <form onSubmit={handleSubmit}>
+        {isSubmitEnabled && (
+          <button
+            type="submit"
+            className="rounded-lg bg-primary px-4 py-2 text-white"
+          >
+            확인
+          </button>
+        )}
+      </form>
     </div>
   );
 }
