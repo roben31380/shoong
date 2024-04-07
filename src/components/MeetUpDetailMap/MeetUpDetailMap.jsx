@@ -1,14 +1,28 @@
-import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
+import {
+  CustomOverlayMap,
+  Map,
+  MapMarker,
+  StaticMap,
+} from 'react-kakao-maps-sdk';
 
 export default function MeetUpDetailMap({ meetUpData }) {
   return (
-    <Map
+    <StaticMap
       className="mx-auto h-full min-h-120pxr w-full rounded-xl object-cover px-20pxr py-15pxr shadow-meetUp"
       center={meetUpData.coords}
       level={3}
       zoomable={false}
+      marker={[
+        {
+          position: {
+            lat: meetUpData.coords.lat,
+            lng: meetUpData.coords.lng,
+          },
+          text: `${meetUpData.cafeName}`,
+        },
+      ]}
     >
-      <MapMarker
+      {/* <MapMarker
         position={meetUpData.coords}
         title={meetUpData.cafeName}
         image={{
@@ -18,14 +32,14 @@ export default function MeetUpDetailMap({ meetUpData }) {
             height: 40,
           },
         }}
-      />
-      <CustomOverlayMap position={meetUpData.coords} yAnchor={2.8}>
+      /> */}
+      {/* <CustomOverlayMap position={meetUpData.coords} yAnchor={2.8}>
         <div className="customoverlay">
           <span className="title rounded border border-primary bg-white px-1 py-1 text-sm font-bold text-primary">
             {meetUpData.cafeName}
           </span>
         </div>
-      </CustomOverlayMap>
-    </Map>
+      </CustomOverlayMap> */}
+    </StaticMap>
   );
 }

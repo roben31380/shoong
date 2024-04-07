@@ -1,8 +1,9 @@
 import { useMeetUpStore } from '@/store/store';
 import { MapMarker, useMap } from 'react-kakao-maps-sdk';
 
-export default function EventMarker({ position, title }) {
+export default function EventMarker({ position, title, cafeImg, id }) {
   const map = useMap();
+  console.log(cafeImg);
 
   const handleClickMarker = (title, marker) => {
     localStorage.setItem('selectedCafe', title);
@@ -15,10 +16,11 @@ export default function EventMarker({ position, title }) {
       position={position}
       title={title}
       image={{
-        src: '/icons/marker.svg', // 마커이미지의 주소입니다
+        src: `https://shoong.pockethost.io/api/files/meetUps/${id}/${cafeImg}`, // 마커이미지의 주소입니다
         size: {
           width: 30,
           height: 40,
+          content: 
         },
       }}
       onClick={(marker) => handleClickMarker(title, marker)}

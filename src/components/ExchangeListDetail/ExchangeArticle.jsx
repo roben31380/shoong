@@ -184,7 +184,6 @@ export default function ExchangeArticle({
                     <Button
                       type="submit"
                       bgClassName="bg-primary"
-                      isSmall={true}
                       onClick={() => handleEditSubmit(exchangeData.id)}
                     >
                       저장
@@ -192,7 +191,6 @@ export default function ExchangeArticle({
                     <Button
                       type="button"
                       bgClassName="bg-gray-400"
-                      isSmall={true}
                       onClick={handleEditCancel}
                     >
                       취소
@@ -210,10 +208,8 @@ export default function ExchangeArticle({
                 </div>
                 <Button
                   type="button"
-                  isSmall={true}
                   bgClassName="bg-primary"
-                  textColorClassName="text-white"
-                  customClassNames="hover:bg-indigo-700 focus:bg-indigo-700 focus:outline-none w-72pxr"
+                  customClassNames="hover:bg-indigo-700 focus:bg-indigo-700 focus:outline-none"
                 >
                   대화하기
                 </Button>

@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { CustomOverlayMap, Map } from 'react-kakao-maps-sdk';
+import { CustomOverlayMap, Map, ZoomControl } from 'react-kakao-maps-sdk';
 import EventMarker from './EventMarker';
 import { useMeetUpStore, meetUpDataStore } from '@/store/store';
 
 export default function MeetUpMap({ meetUpData }) {
-  const [newMeetUpData, setNewMeetUpData] = useState(meetUpData);
+  const [result, setResult] = useState('');
   const { setMeetUpData } = meetUpDataStore();
+  const [newMeetUpData, setNewMeetUpData] = useState(meetUpData);
 
   useEffect(() => {
     const geocoder = new window.kakao.maps.services.Geocoder();
@@ -51,13 +52,23 @@ export default function MeetUpMap({ meetUpData }) {
       center={{ lat: 37.556944, lng: 126.923917 }}
       className="relative h-full w-full"
       level={5}
+      onZoomChanged={(map) => {
+        const level = map.getLevel();
+        setResult(`현재 지도 레벨은 ${level} 입니다`);
+      }}
     >
+      <ZoomControl />
       {newMeetUpData.map((data) => {
         return (
           data.coords && (
             <div key={data.id} onClick={() => handleClickMarker(data.cafeName)}>
-              <EventMarker position={data.coords} title={data.cafeName} />
-              <CustomOverlayMap position={data.coords} yAnchor={1.5}>
+              <EventMarker
+                position={data.coords}
+                title={data.cafeName}
+                cafeImg={data.cafeImg[0]}
+                id={data.id}
+              />
+              <CustomOverlayMap position={data.coords} yAnchor={2.8}>
                 <div className="customoverlay">
                   <span className="title rounded border border-primary bg-white px-1 py-1 text-sm font-bold text-primary">
                     {data.cafeName}

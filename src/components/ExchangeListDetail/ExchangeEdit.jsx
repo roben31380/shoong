@@ -131,7 +131,6 @@ export default function ExchangeEdit({
                 <div className="flex space-x-2">
                   <Button
                     type="submit"
-                    isSmall={true}
                     isDisabled={true}
                     bgClassName="buttonStyle bg-primary hover:bg-indigo-700"
                     textColorClassName="text-white"
@@ -142,7 +141,6 @@ export default function ExchangeEdit({
                   </Button>
                   <Button
                     type="button"
-                    isSmall={true}
                     bgClassName="bg-gray-400 hover:bg-gray-500"
                     textColorClassName="text-white"
                     customClassNames="focus:outline-none"
