@@ -49,10 +49,7 @@ export default function MeetUpDetail() {
           content={
             <>
               <MeetUpDetailItem title="기본특전" content={basicGift} />
-              <MeetUpDetailItem
-                title="선착특전"
-                content="슬로건 10개, 키링 3명"
-              />
+              <MeetUpDetailItem title="선착특전" content={priorityGift} />
             </>
           }
         />
@@ -60,7 +57,6 @@ export default function MeetUpDetail() {
           title="EVENT"
           content={
             <>
-              <MeetUpDetailItem title="선착특전" content={priorityGift} />
               <MeetUpDetailItem
                 title="해쉬태그"
                 content={
