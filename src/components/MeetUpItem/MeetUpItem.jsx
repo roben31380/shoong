@@ -11,6 +11,7 @@ export default function MeetUpItem({ info }) {
       document.getElementById(info.id).scrollIntoView({
         behavior: 'smooth',
         block: 'center',
+        inline: 'center',
       });
     }
   }, [selectedCafe, info.cafeName, info.id]);
