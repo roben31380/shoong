@@ -20,7 +20,6 @@ export default function EventMarker({ position, title, cafeImg, id }) {
         size: {
           width: 30,
           height: 40,
-          content: 
         },
       }}
       onClick={(marker) => handleClickMarker(title, marker)}
