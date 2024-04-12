@@ -25,6 +25,13 @@ import LoginInfo from './pages/ProfileSetting/LoginInfo';
 import MyBias from './pages/MyBias/MyBias';
 import NotFound from './pages/NotFound/NotFound';
 import Register from './pages/Register/Register';
+import CollectBookAdd from './pages/CollectBookAdd/CollectBookAdd';
+import InformUs from './pages/InformUs/InformUs';
+import PhotoCardSubmit from './pages/PhotoCardSubmit/PhotoCardSubmit';
+import MeetUpSubmit from './pages/MeetUpSubmit/MeetUpSubmit';
+import KakaoRedirect from './pages/Login/KakaoRedirect';
+// import NaverRedirect from './pages/Login/NaverRedirect';
+import InstaRedirect from './pages/Login/InstaRedirect';
 
 const router = createBrowserRouter([
   {
@@ -72,8 +79,28 @@ const router = createBrowserRouter([
         loader: userData,
       },
       {
-        path: '/collectBook/:group/:id',
+        path: '/informUs/photoCardSubmit',
+        element: <PhotoCardSubmit />,
+        loader: phocaData,
+      },
+      {
+        path: '/informUs/meetUpSubmit',
+        element: <MeetUpSubmit />,
+        loader: phocaData,
+      },
+      {
+        path: '/informUs',
+        element: <InformUs />,
+        loader: userData,
+      },
+      {
+        path: '/collectBook/:group/:id/:title',
         element: <ColloectBookDetail />,
+        loader: phocaData,
+      },
+      {
+        path: '/collectBook/collectBookAdd',
+        element: <CollectBookAdd />,
         loader: phocaData,
       },
       {
@@ -93,6 +120,18 @@ const router = createBrowserRouter([
         path: '/register',
         element: <Register />,
         loader: userData,
+      },
+      {
+        path: '/api/oauth2-redirect',
+        element: <KakaoRedirect />,
+      },
+      {
+        // path: '/authNaver',
+        // element: <NaverRedirect />,
+      },
+      {
+        path: '/api/oauth2-redirect',
+        element: <InstaRedirect />,
       },
     ],
   },
