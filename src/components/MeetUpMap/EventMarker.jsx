@@ -1,20 +1,22 @@
-import { useMeetUpStore } from '@/store/store';
-import { Circle, MapMarker, useMap } from 'react-kakao-maps-sdk';
+import { MapMarker } from 'react-kakao-maps-sdk';
 
-export default function EventMarker({ position, title, cafeImg, id }) {
-  const map = useMap();
-
-  const handleClickMarker = (title, marker) => {
-    localStorage.setItem('selectedCafe', title);
-    useMeetUpStore.setState({ selectedCafe: title });
-    map.panTo(marker.getPosition());
-  };
-
+export default function EventMarker({
+  position,
+  title,
+  setCenter,
+  handleClickMarker,
+}) {
   return (
     <MapMarker
       position={position}
       title={title}
-      onClick={(marker) => handleClickMarker(title, marker)}
+      onClick={() => {
+        handleClickMarker(title);
+        setCenter({
+          center: { lat: position.lat, lng: position.lng },
+          isPanto: true,
+        });
+      }}
     ></MapMarker>
   );
 }

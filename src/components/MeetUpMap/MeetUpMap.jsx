@@ -1,11 +1,27 @@
-import { useEffect, useState } from 'react';
-import { CustomOverlayMap, Map, ZoomControl } from 'react-kakao-maps-sdk';
 import EventMarker from './EventMarker';
+import { useEffect, useState } from 'react';
+import { TbCurrentLocation } from 'react-icons/tb';
 import { useMeetUpStore, meetUpDataStore } from '@/store/store';
+import {
+  CustomOverlayMap,
+  Map,
+  MapMarker,
+  ZoomControl,
+} from 'react-kakao-maps-sdk';
 
 export default function MeetUpMap({ meetUpData }) {
   const { setMeetUpData } = meetUpDataStore();
   const [newMeetUpData, setNewMeetUpData] = useState(meetUpData);
+  const [userLocation, setUserLocation] = useState(null);
+  const [mapCenter, setMapCenter] = useState({
+    lat: 37.556944,
+    lng: 126.923917,
+  });
+
+  const handleClickMarker = (title) => {
+    localStorage.setItem('selectedCafe', title);
+    useMeetUpStore.setState({ selectedCafe: title });
+  };
 
   useEffect(() => {
     const geocoder = new window.kakao.maps.services.Geocoder();
@@ -39,23 +55,44 @@ export default function MeetUpMap({ meetUpData }) {
       .catch((error) => console.error(error));
   }, [meetUpData, setMeetUpData]);
 
-  const handleClickMarker = (title) => {
-    localStorage.setItem('selectedCafe', title);
-    useMeetUpStore.setState({ selectedCafe: title });
+  useEffect(() => {
+    if (userLocation) {
+      // 사용자의 현재 위치로 지도 중심을 이동합니다.
+      setMapCenter(userLocation);
+    }
+  }, [userLocation]);
+
+  const handleCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const currentLocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          // 사용자 위치를 상태에 저장합니다.
+          setUserLocation(currentLocation);
+        },
+        (error) => {
+          console.error(error);
+          alert('위치 정보를 가져오는 데 실패했습니다.');
+        }
+      );
+    } else {
+      // Geolocation API를 지원하지 않는 경우의 처리
+      alert('이 브라우저에서는 Geolocation이 지원되지 않습니다.');
+    }
   };
 
   return (
     <Map
-      center={{ lat: 37.556944, lng: 126.923917 }}
+      center={mapCenter}
+      isPanto={true}
       className="relative h-full w-full"
       level={5}
-      onZoomChanged={(map) => {
-        const level = map.getLevel();
-      }}
     >
       <ZoomControl />
       {newMeetUpData.map((data) => {
-        console.log(data);
         return (
           data.coords && (
             <div
@@ -63,11 +100,27 @@ export default function MeetUpMap({ meetUpData }) {
               key={data.id}
               onClick={() => handleClickMarker(data.cafeName)}
             >
+              {userLocation && (
+                <MapMarker
+                  position={userLocation}
+                  image={{
+                    src: '/icons/marker.svg',
+                    size: { width: 40, height: 40 },
+                    options: {
+                      alt: '내 위치',
+                    },
+                  }}
+                />
+              )}
               <EventMarker
                 position={data.coords}
                 title={data.cafeName}
                 cafeImg={data.cafeImg[0]}
+                handleClickMarker={handleClickMarker}
                 id={data.id}
+                onClick={() =>
+                  handleClickMarker(data.coords.lat, data.coords.lng)
+                }
               />
               <CustomOverlayMap position={data.coords} yAnchor={1}>
                 <div className="group relative h-60pxr w-60pxr cursor-pointer">
@@ -91,6 +144,10 @@ export default function MeetUpMap({ meetUpData }) {
           )
         );
       })}
+      <TbCurrentLocation
+        className="absolute bottom-150pxr left-6 z-20 h-10 w-10 rounded-full border border-primary bg-white px-1 py-1 text-primary hover:cursor-pointer"
+        onClick={handleCurrentLocation}
+      />
     </Map>
   );
 }
