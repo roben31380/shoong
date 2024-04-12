@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import pb from '@/api/pocketbase';
+import Button from '../Button/Button';
 import { GoTrash, GoPencil } from 'react-icons/go';
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
-import Button from '../Button/Button';
 
 export default function ExchangeArticle({
   users,
@@ -123,7 +123,7 @@ export default function ExchangeArticle({
   return (
     <>
       <ul className="mt-5">
-        {exchangeListData.map((exchangeData) => {
+        {[...exchangeListData].reverse().map((exchangeData) => {
           let isUserTheWriter = '';
           const user = usersById[exchangeData.writer];
           const timeSinceUpdated = timeSince(exchangeData.updated);
