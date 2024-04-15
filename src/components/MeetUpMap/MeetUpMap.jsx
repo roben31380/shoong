@@ -3,10 +3,10 @@ import { useEffect, useState } from 'react';
 import { TbCurrentLocation } from 'react-icons/tb';
 import { useMeetUpStore, meetUpDataStore } from '@/store/store';
 import {
-  CustomOverlayMap,
   Map,
   MapMarker,
   ZoomControl,
+  CustomOverlayMap,
 } from 'react-kakao-maps-sdk';
 
 export default function MeetUpMap({ meetUpData }) {
