@@ -6,6 +6,7 @@
 /* @import './custom-utilities.css'; */
 
 @import './App.css';
+@import './Mui.css';
 
 .flexCenter {
   @apply flex items-center justify-center;
