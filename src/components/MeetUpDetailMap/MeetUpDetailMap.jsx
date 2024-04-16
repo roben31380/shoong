@@ -1,21 +1,26 @@
 import { StaticMap } from 'react-kakao-maps-sdk';
 
-export default function MeetUpDetailMap({ meetUpData }) {
+export default function MeetUpDetailMap({ lat, lng, cafeName }) {
   return (
     <StaticMap
-      className="mx-auto h-full min-h-120pxr w-full rounded-xl object-cover shadow-meetUp"
-      center={meetUpData.coords}
+      center={{
+        lat: lat,
+        lng: lng,
+      }}
       level={3}
-      zoomable={false}
       marker={[
         {
           position: {
-            lat: meetUpData.coords.lat,
-            lng: meetUpData.coords.lng,
+            lat: lat,
+            lng: lng,
           },
-          text: `${meetUpData.cafeName}`,
+          text: `${cafeName}`,
         },
       ]}
+      style={{
+        width: '100%',
+        height: '450px',
+      }}
     ></StaticMap>
   );
 }
