@@ -20,7 +20,7 @@ export default function DetailHeader({
   const flexLayout = isBottomSheet ? 'justify-between' : 'justify-center';
   const absolute = isBottomSheet ? '' : 'absolute left-5';
 
-  return ~(
+  return (
     <>
       <div
         className={`fixed top-0 flex h-12 w-full items-center shadow ${flexLayout} z-10 bg-white px-5`}
