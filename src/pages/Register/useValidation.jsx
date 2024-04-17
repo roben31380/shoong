@@ -37,6 +37,18 @@ export default function useValidation() {
     birth: false,
   });
 
+  /* -------------------------------------------------------------------------- */
+  /*                 isAllFilled, isAllValidated, isEmailUnique                 */
+  /* -------------------------------------------------------------------------- */
+
+  //모든 입력필드가 다 채워져 있는지 검사
+  const isAllFilled = Object.values(formData).reduce((acc, cur) => acc && cur);
+
+  //모든 입력필드가 형식에 맞게 채워졌는지 검사
+  const isAllValidated = Object.values(isValidatedList).reduce(
+    (acc, cur) => acc && cur
+  );
+
   const [isEmailUnique, setIsEmailUnique] = useState(true);
 
   /* -------------------------------------------------------------------------- */
@@ -125,6 +137,8 @@ export default function useValidation() {
     formData,
     isValidatedList,
     isOnceList,
+    isAllFilled,
+    isAllValidated,
     isEmailUnique,
     handleInputChange,
     setBirth,

@@ -4,10 +4,10 @@ import { useNavigate } from 'react-router-dom';
 
 export default function useSubmit(
   formData,
-  isValidatedList,
+  isAllFilled,
+  isAllValidated,
   isEmailUnique,
-  checkList,
-  checkedList
+  isRequiredChecked
 ) {
   const navigate = useNavigate();
 
@@ -17,21 +17,6 @@ export default function useSubmit(
 
   const [isRegisterButtonDisabled, setIsRegisterButtonDisabled] =
     useState(true);
-
-  //모든 입력필드가 다 채워져 있는지 검사
-  const isAllFilled = Object.values(formData).reduce((acc, cur) => acc && cur);
-
-  //모든 입력필드가 형식에 맞게 채워졌는지 검사
-  const isAllValidated = Object.values(isValidatedList).reduce(
-    (acc, cur) => acc && cur
-  );
-
-  //필수약관이 모두 체크돼있는지 검사
-  const requiredCheckList = checkList.slice(0, 3); //전체 약관 중 필수약관만 잘라내기
-  const isRequiredChecked = requiredCheckList.reduce(
-    (acc, cur) => acc && checkedList.includes(cur),
-    true
-  );
 
   //setIsRegisterButtonDisabled를 useEffect에 안 넣고 그냥 상태 변경해버리면 무한 루프에 빠짐.
   useEffect(() => {

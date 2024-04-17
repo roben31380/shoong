@@ -5,13 +5,28 @@ export default function useCheckbox() {
   /*                                  체크박스 컨트롤                                  */
   /* -------------------------------------------------------------------------- */
 
+  const termsCheckboxList = [
+    '[필수] 만 14세 이상입니다.',
+    '[필수] 서비스 이용약관 동의 > ',
+    '[필수] 개인정보 처리방침 동의 > ',
+    '[선택] 마케팅 수신 동의',
+  ];
+
   const checkList = [
     'agreeOverFourteen',
     'agreeService',
     'agreePersonalInfo',
     'agreeMarketing',
   ];
+
   const [checkedList, setCheckedList] = useState([]);
+
+  //필수약관이 모두 체크돼있는지 검사
+  const requiredCheckList = checkList.slice(0, 3); //전체 약관 중 필수약관만 잘라내기
+  const isRequiredChecked = requiredCheckList.reduce(
+    (acc, cur) => acc && checkedList.includes(cur),
+    true
+  );
 
   const handleCheckboxChange = (e) => {
     // checkedList.includes(e.target.name)와 console.log(e.target.checked)는 반대되는 값임에 주의
@@ -66,8 +81,10 @@ export default function useCheckbox() {
   };
 
   return {
+    termsCheckboxList,
     checkList,
     checkedList,
+    isRequiredChecked,
     handleCheckboxChange,
     agreeAllButtonStyle,
     handleAgreeAll,
