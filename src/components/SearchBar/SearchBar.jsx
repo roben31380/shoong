@@ -43,7 +43,7 @@ export default function SearchBar({ name, placeholder, bgStyle }) {
       className={`${bgStyle} mx-4 inline-flex w-4/5 flex-row items-start justify-start gap-2 rounded-[30px] px-4 py-1.5`}
       style={{ maxWidth: '1280px' }}
     >
-      <label htmlFor={name}>
+      <label className="self-center" htmlFor={name}>
         <BsSearch className="h-6" />
       </label>
       <input
@@ -51,7 +51,7 @@ export default function SearchBar({ name, placeholder, bgStyle }) {
         id={name}
         ref={inputRef}
         placeholder={placeholder}
-        className="w-full bg-transparent"
+        className="w-full self-center bg-transparent"
         onChange={debounce(handleSearch, 500)}
         defaultValue={search}
       />
