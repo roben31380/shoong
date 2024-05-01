@@ -5,8 +5,10 @@ export default function ExchangeDetail() {
   // @ts-ignore
   const { photoCardData } = useLoaderData();
   return (
-    <div>
-      <ExchangeList photoCardData={photoCardData} />
-    </div>
+    <>
+      <div>
+        <ExchangeList photoCardData={photoCardData} />
+      </div>
+    </>
   );
 }
