@@ -5,12 +5,28 @@ import { useState } from 'react';
 
 import pb from '@/api/pocketbase';
 
+const REQUEST_FAILED_MESSAGE = `\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0통신 에러입니다.\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0`;
+const WRONG_EMAIL_MESSAGE = '이메일을 확인해주세요';
+const CHECK_MAILBOX_MESSAGE = '인증메일이 보내졌습니다. 메일함을 확인해주세요.';
+
 export default function useVerified(email, isEmailValidated, isEmailUnique) {
+  /* -------------------------------------------------------------------------- */
+  /*         '인증하기' 버튼 누르면 버튼 disable 시키고 Input 필드 readonly 만들기         */
+  /* -------------------------------------------------------------------------- */
   const [isVerificationButtonDisabled, setIsVerificationButtonDisabled] =
     useState(false);
 
   const [isEmailInputFieldReadOnly, setIsEmailInputFieldReadOnly] =
     useState(false);
+
+  /* -------------------------------------------------------------------------- */
+  /*           '인증하기' 버튼 클릭 시 나오는 모달창 컨트롤하기 위한 변수들                   */
+  /* -------------------------------------------------------------------------- */
+  const [isEmailVericationModalOpened, setIsEmailVericationModalOpened] =
+    useState(false);
+
+  const [emailVerificationModalMesseage, setEmailVerificationModalMesseage] =
+    useState('');
 
   /* -------------------------------------------------------------------------- */
   /*                    이메일 인증을 위해서는 일단 register 필요                      */
@@ -26,7 +42,8 @@ export default function useVerified(email, isEmailValidated, isEmailUnique) {
     try {
       await pb.collection('users').create(data);
     } catch (error) {
-      alert('통신 에러');
+      setEmailVerificationModalMesseage(REQUEST_FAILED_MESSAGE);
+      setIsEmailVericationModalOpened(true);
     }
   };
 
@@ -38,10 +55,12 @@ export default function useVerified(email, isEmailValidated, isEmailUnique) {
     const response = await pb.collection('users').requestVerification(email);
     try {
       if (response) {
-        alert('인증메일이 보내졌습니다. 메일함을 확인해주세요.');
+        setEmailVerificationModalMesseage(CHECK_MAILBOX_MESSAGE);
+        setIsEmailVericationModalOpened(true); //모달창 열여주기 (주의할 점 : requestVerification 함수가 setTimeout에 들어가있기 때문에 handleEmailVerification 바로 안에 setIsEmailVericationModalOpened을 해버리면 requestVerification 되기도 전에 모달창이 먼저 열려버림)
       }
     } catch (error) {
-      alert('통신 에러');
+      setEmailVerificationModalMesseage(REQUEST_FAILED_MESSAGE);
+      setIsEmailVericationModalOpened(true); //모달창 열여주기 (주의할 점 : requestVerification 함수가 setTimeout에 들어가있기 때문에 handleEmailVerification 바로 안에 setIsEmailVericationModalOpened을 해버리면 requestVerification 되기도 전에 모달창이 먼저 열려버림)
     }
   };
 
@@ -51,7 +70,7 @@ export default function useVerified(email, isEmailValidated, isEmailUnique) {
   const handleEmailVerification = async (e) => {
     e.preventDefault();
 
-    if (email !== '' && isEmailValidated && isEmailUnique) {
+    if (isEmailValidated && isEmailUnique) {
       setIsVerificationButtonDisabled(true); //인증하기 버튼 비활성화
       setIsEmailInputFieldReadOnly(true); //이메일 입력필드 읽기전용화
 
@@ -62,12 +81,16 @@ export default function useVerified(email, isEmailValidated, isEmailUnique) {
         requestVerification(email);
       }, 900);
     } else {
-      alert('이메일을 확인해주세요');
+      setEmailVerificationModalMesseage(WRONG_EMAIL_MESSAGE);
+      setIsEmailVericationModalOpened(true); //모달창 열여주기
     }
   };
 
   return {
     handleEmailVerification,
+    emailVerificationModalMesseage,
+    isEmailVericationModalOpened,
+    setIsEmailVericationModalOpened,
     isVerificationButtonDisabled,
     isEmailInputFieldReadOnly,
   };
