@@ -1,3 +1,5 @@
+import mergeTailwindClassNames from '@/utils/mergeTailwindClassNames';
+
 export default function Input({
   name,
   value,
@@ -5,15 +7,16 @@ export default function Input({
   type,
   placeholder,
   customClassNames = '',
-  bgClassName = '',
   isLabeled = false,
   label,
   mt = 0,
   ...restProps
 }) {
   const defaultClassNames = `h-44pxr w-265pxr rounded-[0.625rem] pl-20pxr text-sm font-medium text-contentPrimary placeholder-contentTertiary outline-none focus:outline-primary`;
-  const classNames =
-    `${bgClassName} ${customClassNames} ${defaultClassNames}`.trim();
+  const classNames = mergeTailwindClassNames(
+    customClassNames,
+    defaultClassNames
+  );
 
   return (
     <div className={`mt-${mt} flex flex-col`}>

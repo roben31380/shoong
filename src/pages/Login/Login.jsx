@@ -82,7 +82,7 @@ export default function Login() {
         />
         <Button
           type="submit"
-          customClassNames="mt-26pxr focus-visible:outline outline-4 outline-white"
+          customClassNames="mt-26pxr focus-visible:outline outline-2 outline-offset-2 outline-white"
         >
           로그인
         </Button>

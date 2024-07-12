@@ -47,8 +47,6 @@ export default function useCheckbox() {
           bg: 'bg-gray-100',
           text: 'text-contentTertiary',
         });
-
-    // activateRegisterButton();
   };
 
   /* -------------------------------------------------------------------------- */
@@ -74,10 +72,6 @@ export default function useCheckbox() {
           bg: 'bg-primary',
           text: 'text-white',
         });
-
-    // setIsRegisterButtonDisabled(!isRegisterButtonDisabled);
-
-    // activateRegisterButton();
   };
 
   return {

@@ -1,33 +1,30 @@
+import mergeTailwindClassNames from '@/utils/mergeTailwindClassNames';
+
 // 버튼 컴포넌트
 export default function Button({
   type = 'button',
   isSmall,
   isDisabled,
-  bgClassName = '',
-  textColorClassName = '',
   customClassNames = '',
   children,
   onClick,
   ...restProps
 }) {
-  let width, height, fontWeight, backgroundColor, textColor;
+  let width, height, fontWeight;
   if (isSmall) {
     (width = 'w-69pxr'), (height = 'h-28pxr'), (fontWeight = 'medium');
   } else {
     (width = 'w-265pxr'), (height = 'h-44pxr'), (fontWeight = 'semibold');
   }
 
-  bgClassName
-    ? (backgroundColor = bgClassName)
-    : (backgroundColor = isDisabled ? 'bg-gray-400' : 'bg-primary');
+  const backgroundColor = isDisabled ? 'bg-gray-400' : 'bg-primary';
 
-  textColorClassName
-    ? (textColor = textColorClassName)
-    : (textColor = 'text-white');
+  const defaultClassNames = `${width} ${height} ${fontWeight} ${backgroundColor} rounded-[10px] text-sm text-white`;
 
-  const defaultClassNames = `${width} ${height} ${fontWeight} rounded-[10px] text-sm`;
-  const classNames =
-    `${textColor} ${backgroundColor} ${customClassNames} ${defaultClassNames}`.trim();
+  const classNames = mergeTailwindClassNames(
+    customClassNames,
+    defaultClassNames
+  );
 
   return (
     <button
